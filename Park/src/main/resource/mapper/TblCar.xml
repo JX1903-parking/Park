@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.park.mapper.CarMapper">
+	<select id="selCar"  resultMap="Carmap">
+		select * from tbcar c,tbfrontuser f,tbright r,tbparam p
+		where c.userid=f.userid and c.rightid=r.rightid and f.stateid=p.paramid and c.carid=#{brand}
+	</select>
+	<resultMap id="Carmap" type="com.park.entity.TblCar">
+		<id property="carid" column="CARID" />
+		<result property="begintime" column="BEGINTIME" />
+		<result property="endtime" column="ENDTIME" />
+		<result property="carimage" column="CARIMAGE" />
+		<result property="locationid" column="LOCATIONID" />
+		<association property="right" column="rightid" javaType="com.park.entity.TblRight">
+			<id property="rightid" column="RIGHTID" />
+			<result property="rightname" column="RIGHTNAME" />
+			<result property="cost" column="COST" />
+		</association>
+		<association property="user" column="userid" javaType="com.park.entity.TblUser">
+			<id property="userid" column="USERID" />
+			<result property="uname" column="UNAME" />
+			<result property="upass" column="UPASS" />
+			<result property="tel" column="TEL" />
+			<result property="isdeleted" column="ISDELETED" />
+			<result property="money" column="MONEY" />
+			<association property="param" column="paramid" javaType="com.park.entity.TblParam">
+				<id property="paramid" column="PARAMID" />
+				<result property="paramname" column="PARAMNAME" />
+			</association>
+		</association>
+	</resultMap>
+
+	<insert id="addCar" parameterType="com.park.entity.TblCar">
+		INSERT INTO tbcar(carid,userid,rightid,begintime,endtime,carimage,locationid)
+		VALUES(#{carid},'1','1','','',#{carimage},#{locationid})
+	</insert>
+
+	<select id="selLocation" resultType="com.park.entity.TblLocation">
+		SELECT * FROM tblocation where locationstateid ='7' and locationid=#{locationid}
+	</select>
+
+	<update id="modLocation">
+		UPDATE tblocation set locationstateid='8' where locationid=#{locationid}
+	</update>
+
+    <update id="modCar" parameterType="java.util.Map">
+		UPDATE tbcar set locationid=#{locationid} where carid=#{carid}
+	</update>
+
+    <insert id="addRecord" parameterType="com.park.entity.TblRecord">
+		INSERT INTO tbrecord(carid,intime,locationid)
+		VALUES(#{carid},#{intime},#{locationid})
+	</insert>
+
+	<select id="getLocation" resultType="java.lang.Integer">
+		SELECT count(*) FROM tblocation where locationstateid=7
+	</select>
+
+	<select id="getTotal" resultType="java.lang.Integer">
+		SELECT count(*) FROM tblocation
+	</select>
+
+</mapper>
+	

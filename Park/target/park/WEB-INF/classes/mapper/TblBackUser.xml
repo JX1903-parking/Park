@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.park.mapper.BackUserMapper">
+	<select id="backLogin" parameterType="java.lang.String" resultType="com.park.entity.TblBackUser">
+		select * from tbbackuser where userid = #{userid} and upass = #{upass} and isdeleted = 0
+	</select>
+	<update id="updateBackUserParam" parameterType="java.lang.Object">
+		update tbbackuser set
+		<if test="paramid==123456"> upass = #{paramid}
+		</if>
+		<if test="paramid==1"> isdeleted = #{paramid}
+		</if>
+		<if test="paramid==5 or paramid==6"> stateid = #{paramid}
+		</if>
+		 where userid = #{userid};
+	</update>
+	<select id="findAllBackUser" parameterType="java.util.Map" resultType="com.park.entity.TblBackUser" resultMap="userMap">
+		select bu.*,p.paramname from tbbackuser bu,tbparam p where bu.stateid = p.paramid and bu.isdeleted = 0 and bu.roleid = 10
+		<if test="null != begintime and !(''.equals(begintime))"> and regtime &gt;= #{begintime}
+		</if>
+		<if test="null !=endtime and !(''.equals(endtime))"> and regtime &lt;= #{endtime}
+		</if>
+		<if test="null != keyword and !(''.equals(keyword))"> and uname like "%"#{keyword}"%"
+		</if>
+		 LIMIT #{page},#{limit}
+	</select>
+	<resultMap id="userMap" type="com.park.entity.TblBackUser">
+		<id property="userid" column="userid"/>
+		<result property="uname" column="uname"/>
+		<result property="upass" column="upass"/>
+		<result property="utel" column="utel"/>
+		<result property="uemail" column="uemail"/>
+		<result property="roleid" column="roleid"/>
+		<result property="stateid" column="stateid"/>
+		<result property="isdeleted" column="isdeleted"/>
+		<result property="money" column="money"/>
+		<result property="uage" column="uage"/>
+		<result property="usex" column="usex"/>
+		<result property="address" column="address"/>
+		<result property="worktime" column="worktime"/>
+		<result property="regtime" column="regtime"/>
+
+		<association property="param" column="paramid" javaType="com.park.entity.TblParam">
+			<id property="paramid" column="paramid"/>
+			<result property="paramname" column="paramname"/>
+			<result property="pid" column="pid"/>
+		</association>
+	</resultMap>
+	<select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*) from tbbackuser where isdeleted = 0
+		<if test="null != begintime and !(''.equals(begintime))"> and regtime &gt;= #{begintime}
+		</if>
+		<if test="null !=endtime and !(''.equals(endtime))"> and regtime &lt;= #{endtime}
+		</if>
+		<if test="null != keyword and !(''.equals(keyword))"> and uname like "%"#{keyword}"%"
+		</if>
+	</select>
+	<select id="findBackUserById" parameterType="java.lang.String" resultType="com.park.entity.TblBackUser">
+		select * from tbbackuser where userid = #{userid}
+	</select>
+	<insert id="addBackUser" parameterType="com.park.entity.TblBackUser" keyProperty="userid">
+  		insert into tbbackuser (userid,uname,upass,utel,uemail,roleid,uage,usex,address,regtime)
+		values(#{userid},#{uname},#{upass},#{utel},#{uemail},#{roleid},#{uage},#{usex},#{address},#{regtime})
+	</insert>
+	<update id="updateBackUser" parameterType="com.park.entity.TblBackUser">
+  		update tbbackuser set uname=#{uname},upass=#{upass},utel=#{utel},uemail=#{uemail},
+  		uage=#{uage},usex=#{usex},address=#{address}
+  		where userid = #{userid}
+	</update>
+<!--	<select id="findParentMenu" parameterType="java.lang.String" resultType="com.park.entity.TblParentMenu">-->
+<!--		select pname from tbparentmenu where ppid = 0-->
+<!--	</select>-->
+</mapper>
+	

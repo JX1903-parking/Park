@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.park.mapper.UserMapper">
+
+	<!-- 前台用户列表-->
+	<select id="findByUser" parameterType="com.park.entity.TblUserList" resultType="com.park.entity.TblUser"
+			resultMap="usermap">
+		select tfu.*,tp.paramname from tbfrontuser tfu,tbparam tp where tfu.stateid=tp.paramid and
+		tfu.isdeleted !=1
+
+		<if test="null!=username and ''!=username">
+			and tfu.uname like "%"#{username}"%"
+		</if>
+		<if test="null!=starttime and '' neq starttime ">
+			and tfu.regtime &gt;= #{starttime}
+		</if>
+
+		<if test="null neq endtime and '' neq endtime">
+			and tfu.regtime &lt;= #{endtime}
+		</if>
+
+		LIMIT #{page},#{limit}
+
+	</select>
+	<resultMap id="usermap" type="com.park.entity.TblUser">
+		<id property="userid" column="userid"></id>
+		<result property="uname" column="uname"></result>
+		<result property="upass" column="upass"></result>
+		<result property="utel" column="utel"></result>
+		<result property="uemail" column="uemail"></result>
+		<result property="usex" column="usex"></result>
+		<result property="uage" column="uage"></result>
+		<result property="address" column="address"></result>
+		<result property="regtime" column="regtime"></result>
+		<result property="stateid" column="stateid"></result>
+		<result property="isdeleted" column="isdeleted"></result>
+		<result property="money" column="money"></result>
+		<result property="column1" column="column1"></result>
+		<result property="column2" column="column2"></result>
+
+		<association property="param" column="paramid" javaType="com.park.entity.TblParam">
+			<id property="paramid" column="paramid"></id>
+			<result property="paramname" column="paramname"></result>
+			<result property="pid" column="pid"></result>
+
+		</association>
+
+		<!--        <collection property="carList" ofType="com.park.entity.TblCar">-->
+		<!--            <id property="carid" column="carid"></id>-->
+		<!--            <result property="userid" column="userid"></result>-->
+		<!--            <result property="rightid" column="rightid"></result>-->
+		<!--            <result property="begintime" column="begintime"></result>-->
+		<!--            <result property="endtime" column="endtime"></result>-->
+		<!--            <result property="carimage" column="carimage"></result>-->
+		<!--            <result property="locationid" column="locationid"></result>-->
+		<!--        </collection>-->
+	</resultMap>
+
+
+	<!--获取列表总数-->
+	<select id="getUserCount" parameterType="com.park.entity.TblUserList" resultType="java.lang.Integer">
+		select count(*) from tbfrontuser u where 1=1
+		<if test="null!=username and ''!=username">
+			and u.uname like "%"#{username}"%"
+		</if>
+		<if test="null!=starttime and '' neq starttime">
+			and u.regtime &gt;= #{starttime}
+		</if>
+
+		<if test="null neq endtime and '' neq endtime">
+			and u.regtime &lt;= #{endtime}
+		</if>
+
+	</select>
+
+
+	<!--修改状态-->
+	<update id="UpdateUserStatus">
+		update tbfrontuser set
+
+		<if test="state==123456">
+			upass=#{state}
+		</if>
+		<if test="state==1">
+			isdeleted=1
+		</if>
+		<if test="state==5 or state==6">
+			stateid=#{state}
+		</if>
+
+		where userid=#{userid}
+	</update>
+	<select id="findUserById" parameterType="java.lang.String" resultType="com.park.entity.TblUser">
+	select * from tbfrontuser where userid = #{userid}
+	</select>
+	<update id="updateUser" parameterType="com.park.entity.TblUser">
+  		update tbfrontuser set uname=#{uname},upass=#{upass},utel=#{utel},uemail=#{uemail},
+  		uage=#{uage},usex=#{usex},address=#{address}
+  		where userid = #{userid}
+	</update>
+</mapper>
+	

@@ -1,5 +1,6 @@
 package com.park.web;
 
+import com.park.aoplog.Log;
 import com.park.biz.CarBiz;
 import com.park.entity.TblCar;
 import com.park.tools.Distinguish;
@@ -31,6 +32,7 @@ public class CarOutAction {
      *
      * @return {Result}
      */
+    @Log(operationType = "文件上传", operationName = "上传出场车辆的车牌号图片", module = "系统管理")
     @RequestMapping(value = "/upfile.action")
     public @ResponseBody
     Object upfile(@RequestParam(value = "file", required = false) MultipartFile mfile, HttpServletRequest request) {
@@ -43,6 +45,7 @@ public class CarOutAction {
     }
 
     //图片识别
+    @Log(operationType = "图片识别", operationName = "将上传的图片转为文字，查询数据库，获取的信息使用map存储，返回前台", module = "系统管理")
     @RequestMapping(value = "/upImg.action")
     public @ResponseBody
     Object upImg(@RequestParam(value = "file", required = false) MultipartFile mfile, HttpServletRequest request) {

@@ -16,6 +16,7 @@ public interface BackUserMapper {
      * @param upass
      * @return
      */
+
     public TblBackUser backLogin(@Param("userid") String userid, @Param("upass") String upass);
 
     /**
@@ -24,6 +25,17 @@ public interface BackUserMapper {
      * @return
      */
     public int delBackUser(@Param("userid") String userid);
+
+
+    /**
+     * @deprecated  检测账号
+     * @param userid
+     * @return
+     */
+
+    public TblBackUser CheckName(@Param("userid") String userid);
+
+
 
     public List<TblBackUser> findAllBackUser(Map<String, Object> paramap);
 

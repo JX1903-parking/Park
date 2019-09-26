@@ -1,5 +1,6 @@
 package com.park.web;
 
+import com.park.aoplog.Log;
 import com.park.biz.FrontUserBiz;
 import com.park.biz.UserBiz;
 import com.park.entity.TblBackUser;
@@ -35,12 +36,13 @@ public class UserAction {
      * @return
      * @deprecated
      */
+    @Log(operationType = "用户管理", operationName = "根据条件查询后台用户信息，返回前台展示", module = "系统管理")
     @RequestMapping(value = "/findAllBackUser.action", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public @ResponseBody
     Map<String, Object> findAllBackUser(HttpServletRequest request, String begintime, String endtime, String keyword, int page, int limit) {
-        System.out.println("进入Action");
+
         Map<String, Object> paramap = new HashMap<String, Object>();
-        System.out.println(begintime + " " + endtime + " " + keyword + " " + page + " " + limit);
+
 
         paramap.put("begintime", begintime);
         paramap.put("endtime", endtime);
@@ -49,7 +51,7 @@ public class UserAction {
         paramap.put("page", page);
         paramap.put("limit", limit);
         int count = userBiz.getCount(paramap);
-        System.out.println("count" + count);
+
         List<TblBackUser> backUserList = userBiz.findAllBackUser(paramap);
         String[] strArr = DateTool.getDate().substring(0, DateTool.getDate().lastIndexOf(" ")).split("-");
         int currentY = Integer.parseInt(strArr[0]);
@@ -63,7 +65,6 @@ public class UserAction {
             int regY = Integer.parseInt(regArr[0]);
             int regM = Integer.parseInt(regArr[1]);
             int regD = Integer.parseInt(regArr[2]);
-            System.out.println(currentY + " " + regY);
             worktime = currentM == regM ? (currentD >= regD ? currentY - regY : currentY - regY - 1) : (currentM > regM ? currentY - regY : currentY - regY - 1);
             backUser.setWorktime(worktime);
         }
@@ -75,6 +76,8 @@ public class UserAction {
         return remap;
     }
 
+
+    @Log(operationType = "用户管理", operationName = "修改后台用户信息", module = "系统管理")
     @RequestMapping(value = "/updateBackUserParam.action", method = RequestMethod.POST, produces = "application/text;charset=utf-8")
     public @ResponseBody
     String updateBackUserParam(HttpServletRequest request, String userid, int paramid) {
@@ -88,6 +91,8 @@ public class UserAction {
         return remsg;
     }
 
+
+    @Log(operationType = "用户管理", operationName = "通过后台用户列表传过来的用户ID查询该用户的数据", module = "系统管理")
     @RequestMapping(value = "/findBackUserById.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public @ResponseBody
     TblBackUser findBackUserById(HttpServletRequest request, String userid) {
@@ -95,12 +100,12 @@ public class UserAction {
         return backUser;
     }
 
+
+    @Log(operationType = "用户管理", operationName = "刷新后台用户列表", module = "系统管理")
     @RequestMapping(value = "/freshBackUser.action", method = RequestMethod.POST, produces = "application/text;charset=utf-8")
     public @ResponseBody
     String freshBackUser(HttpServletRequest request, TblBackUser backUser, String title) {
-        System.out.println("进入新增/修改");
         String remsg = null;
-        System.out.println("标题" + title);
         backUser.setRoleid(10);
         String regtime = DateTool.getDate();
         backUser.setRegtime(regtime);
@@ -119,7 +124,7 @@ public class UserAction {
      * @return
      * @deprecated 查询前台用户列表
      */
-
+    @Log(operationType = "用户管理", operationName = "根据条件查询前台用户信息，返回前台展示", module = "系统管理")
     @RequestMapping(value = "/findByUser.action")
     public @ResponseBody
     Map<String, Object> findByUser(HttpServletRequest request, TblUserList userList) {
@@ -140,7 +145,6 @@ public class UserAction {
         usermap.put("code", 0);
         usermap.put("count", count);
         usermap.put("data", ulist);
-
         return usermap;
 
     }
@@ -149,9 +153,9 @@ public class UserAction {
     /**
      * @param userid
      * @return
-     * @deprecated 修改前台用户账号
+     * @deprecated 修改前台用户数据信息
      */
-
+    @Log(operationType = "用户管理", operationName = "通过参数修改前台用户的状态和密码", module = "系统管理")
     @RequestMapping(value = "/UpdateUserStatus.action", method = RequestMethod.POST, produces = "application/text;charset=utf-8")
     public @ResponseBody
     String UpdateUserStatus(String userid, String paramid) {
@@ -161,6 +165,8 @@ public class UserAction {
         return String.valueOf(num);
     }
 
+
+    @Log(operationType = "用户管理", operationName = "通过前台用户列表传的ID查询该用户的信息", module = "系统管理")
     @RequestMapping(value = "/findUserById.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public @ResponseBody
     TblUser findUserById(HttpServletRequest request, String userid) {
@@ -168,10 +174,11 @@ public class UserAction {
         return user;
     }
 
+    @Log(operationType = "用户管理", operationName = "修改前台用户数据", module = "系统管理")
     @RequestMapping(value = "/updateUser.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public @ResponseBody
     String updateUser(HttpServletRequest request, TblUser user) {
-        int num  = frontUserBiz.updateUser(user);
+        int num = frontUserBiz.updateUser(user);
         return String.valueOf(num);
     }
 

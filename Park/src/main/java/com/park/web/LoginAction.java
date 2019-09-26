@@ -1,5 +1,6 @@
 package com.park.web;
 
+import com.park.aoplog.Log;
 import com.park.biz.TollmanBiz;
 import com.park.biz.UserBiz;
 import com.park.entity.TblBackUser;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/login")
@@ -19,61 +22,81 @@ public class LoginAction {
     @Resource
     private TollmanBiz tollmanBiz;
 
+    private String remsg = "fail";
 
-    @RequestMapping(value = "/tollmanLogin.action", method = {RequestMethod.POST,RequestMethod.GET}, produces = "application/text;charset=utf-8")
+    /**
+     * @param request
+     * @param userid
+     * @param upass
+     * @param securityCode
+     * @deprecated 管理员登录，收费员登录
+     */
+    @Log(operationType = "用户管理", operationName = "管理员登录", module = "系统管理")
+    @RequestMapping(value = "/adLogin.action", method = RequestMethod.POST, produces = "application/text;charset=utf-8")
     public @ResponseBody
-    String tollmanLogin(HttpServletRequest request, String userid, String upass) {
-        String remsg = "fail";
-        System.out.println(userid+"222");
-        TblBackUser backUser = tollmanBiz.tollmanLogin(userid,upass);
-        System.out.println(backUser.getUname() + "==");
-        //判断实体是否为空
-        if (null != backUser) {
-            //判断账号是否被禁用
-            if (5==backUser.getStateid()) {
-                System.out.println(backUser.getStateid());
-                //判断账号是否已被删除
-                if (0==backUser.getIsdeleted()) {
-                    remsg = "success";
-                    request.getSession().setAttribute("backUser", backUser);
-                } else {
-                    remsg = "Non-exist";
-                }
-            } else {
-                remsg = "Prohibit";
-            }
-        }
+    String adLogin(HttpServletRequest request, String userid, String upass, String securityCode) {
 
-        return remsg;
-    }
 
-    @RequestMapping(value = "/backLogin.action", method = RequestMethod.POST, produces = "application/text;charset=utf-8")
-    public @ResponseBody
-    String backLogin(HttpServletRequest request, String userid, String upass, String securityCode) {
-        String remsg = "fail";
         TblBackUser backUser = userBiz.backLogin(userid, upass);
 
         String serverCode = (String) request.getSession().getAttribute("SESSION_SECURITY_CODE");
 
         //判断实体是否为空
-        if (null != backUser) {
-            //判断账号是否被禁用
-            if (5 == backUser.getStateid()) {
-                //判断账号是否已被删除
-                if (0 == backUser.getIsdeleted()) {
-                    if (serverCode.equalsIgnoreCase(securityCode)) {
-                        remsg = "success";
-                        request.getSession().setAttribute("backUser", backUser);
+
+        if (serverCode.equalsIgnoreCase(securityCode)) {
+
+            if (null != backUser) {
+                //判断账号是否被禁用
+                if (5 == backUser.getStateid()) {
+                    //判断账号是否已被删除
+                    if (0 == backUser.getIsdeleted()) {
+                        if (9 == backUser.getRoleid()) {
+                            remsg = "adminsucc";
+                            request.getSession().setAttribute("backUser", backUser);
+                        } else {
+                            remsg = "tollsucc";
+                            request.getSession().setAttribute("backUser", backUser);
+                        }
                     } else {
-                        remsg = "codefail";
+                        remsg = "Non-exist";
                     }
                 } else {
-                    remsg = "Non-exist";
+                    remsg = "Prohibit";
                 }
-            } else {
-                remsg = "Prohibit";
             }
+        } else {
+            remsg = "codefail";
         }
         return remsg;
     }
+
+
+    @Log(operationType = "检测用户名", operationName = "判断用户名是否存在或是否禁用", module = "系统管理")
+    @RequestMapping(value = "/CheckName.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public @ResponseBody
+    Map<String, String> CheckName(HttpServletRequest request, String userid) {
+
+        Map<String, String> map = new HashMap<String, String>();
+        System.out.println(userid + "++");
+        TblBackUser user = userBiz.CheckName(userid);
+
+        if (null == user) {
+            map.put("info", "userfail");
+        } else {
+            if (5 == user.getStateid()) {
+                if (0 == user.getIsdeleted()) {
+                    map.put("info", "success");
+                } else {
+                    map.put("info", "Non-exist");
+                }
+            } else {
+                map.put("info", "Prohibit");
+            }
+        }
+
+
+        return map;
+    }
+
+
 }

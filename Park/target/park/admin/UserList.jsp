@@ -123,7 +123,7 @@
             , page: true //开启分页
             , limit: 10
             , limits: [5, 10, 15]
-            , id: 'docReload'
+            , id: 'userReload'
             , parseData: function (res) {
 
                 return {
@@ -152,7 +152,7 @@
                 var starttime = $('#starttime');
                 var endtime = $('#endtime');
                 //执行重载
-                table.reload('docReload', {
+                table.reload('userReload', {
                     where: {
                         username: username.val(),
                         starttime: starttime.val(),
@@ -213,7 +213,7 @@
                         layer.msg("修改失败");
                     }
                     //执行重载
-                    table.reload('docReload', {
+                    table.reload('userReload', {
                         page: {
                             curr: 1 //重新从第 1 页开始
                         }

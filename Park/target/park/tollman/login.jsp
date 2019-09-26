@@ -26,7 +26,7 @@
         <input name="upass" id="upass" placeholder="密码" type="password" class="layui-input">
         <hr class="hr15">
         <input name="securityCode" placeholder="验证码" type="text" autocomplete="off" style="width: 190px;">
-        <img src="#" id="Verify" style="cursor:hand;" alt="看不清，换一张" width="116"
+        <img src="../serial/getimage.action" id="Verify" style="cursor:hand;" alt="看不清，换一张" width="116"
              height="36">
         <hr class="15">
         <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
@@ -41,13 +41,17 @@
 
     $(function () {
 
+        /**
+         *验证码刷新
+         */
         $(function () {
             //点击图片更换验证码
             $("#Verify").click(function () {
-                $(this).attr("src", "${pageContext.request.contextPath}/Security/SecurityCodeImageAction.action?timestamp=" + new Date().getTime());
+                $("#Verify").attr("src", "${pageContext.request.contextPath}/serial/getimage.action?timestamp=" + new Date().getTime());
             });
         });
 
+        //ajax异步提交
         layui.use('form', function () {
             var form = layui.form;
             //监听提交

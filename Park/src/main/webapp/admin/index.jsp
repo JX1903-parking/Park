@@ -22,8 +22,27 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script>
+        function getSysTime() {
+            var myDate = new Date();
+            var year = myDate.getFullYear(); //年
+            var month = myDate.getMonth(); //月
+            var day = myDate.getDate(); //日
+            var hour = myDate.getHours(); //时
+            var m = myDate.getMinutes(); //分
+            var s = myDate.getSeconds(); //秒
+            var datestr = year + "年" + (month + 1) + "月" + day + "日&nbsp;&nbsp;" + hour + ":" + m + ":" + s;
+            $("#SystemDate").html(datestr);
+
+        }
+
+        function changeTime() {
+
+            setInterval(getSysTime, 1000);
+        }
+
         // 是否开启刷新记忆tab功能
         // var is_remember = false;
+        window.onload = changeTime();
     </script>
 </head>
 <body class="index">
@@ -32,7 +51,7 @@
     <div class="logo"><a href="./index.html">江湖驿站后台管理界面</a></div>
     <div class="left_open"><a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a></div>
     <ul class="layui-nav left fast-add" lay-filter="">
-        <li class="layui-nav-item"><a href="javascript:;">系统时间</a></li>
+        <li id="SystemDate" style="margin-top: 15px;width: 350px">系统时间</li>
     </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item"><a href="javascript:;">
@@ -40,8 +59,8 @@
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd><a onclick="xadmin.open('个人信息','javascrtpt:;')">个人信息</a></dd>
-                <dd><a onclick="xadmin.open('切换帐号','javascrtpt:;')">切换帐号</a></dd>
-                <dd><a href="./login.jsp">退出</a></dd>
+                <%--                <dd><a onclick="xadmin.open('切换帐号','javascrtpt:;')">切换帐号</a></dd>--%>
+                <dd><a href="#">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
@@ -64,7 +83,7 @@
                         <cite>后台用户管理</cite></a></li>
                 </ul>
             </li>
-            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="菜单管理">&#xe723;</i> <cite>文档管理</cite>
+            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="菜单管理">&#xe723;</i> <cite>菜单管理</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li><a onclick="xadmin.add_tab('增加菜单','jsp路径',true)"> <i class="iconfont">&#xe6a7;</i>
@@ -77,14 +96,15 @@
             <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="日志管理">&#xe723;</i> <cite>日志管理</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
-                    <li><a onclick="xadmin.add_tab('日志列表','../admin/LogList.jsp',true)"> <i class="iconfont">&#xe6a7;</i>
+                    <li><a onclick="xadmin.add_tab('日志列表','../admin/LogList.jsp',true)"> <i
+                            class="iconfont">&#xe6a7;</i>
                         <cite>日志列表</cite></a></li>
                 </ul>
             </li>
-            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="角色管理">&#xe723;</i> <cite>日志管理</cite>
+            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="角色管理">&#xe723;</i> <cite>角色管理</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
-                    <li><a onclick="xadmin.add_tab('角色列表','../admin/RoleList.jsp',true)"> <i class="iconfont">&#xe6a7;</i>
+                    <li><a onclick="xadmin.add_tab('角色列表','#',true)"> <i class="iconfont">&#xe6a7;</i>
                         <cite>角色列表</cite></a></li>
                 </ul>
             </li>
@@ -92,10 +112,10 @@
             <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="系统配置">&#xe723;</i> <cite>系统配置</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
-                    <li><a onclick="xadmin.add_tab('参数配置','../admin/ParamConfig.jsp',true)"> <i
+                    <li><a onclick="xadmin.add_tab('参数配置','#',true)"> <i
                             class="iconfont">&#xe6a7;</i>
                         <cite>参数配置</cite></a></li>
-                    <li><a onclick="xadmin.add_tab('权限配置','../admin/ResConfig.jsp',true)"> <i
+                    <li><a onclick="xadmin.add_tab('权限配置','#',true)"> <i
                             class="iconfont">&#xe6a7;</i> <cite>权限配置</cite></a>
                     </li>
                 </ul>

@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface UserBiz {
     public TblBackUser backLogin(String userid, String upass);
+    public TblBackUser CheckName(String userid);
     public int delBackUser(String userid);
     public List<TblBackUser> findAllBackUser(Map<String, Object> paramap);
     public int getCount(Map<String, Object> findMap);

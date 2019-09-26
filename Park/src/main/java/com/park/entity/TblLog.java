@@ -1,18 +1,22 @@
 package com.park.entity;
 
+import java.io.Serializable;
+
 /**
  * @Date: 2019/9/19 14:06
  * @Description: 日志表
  */
 
-public class TblLog {
+public class TblLog implements Serializable {
     private Integer logid;
-    private String userid;
-    private String backuserid;
+    private String uname;//操作用户名字
     private String incident;//事件
+    private String module;//执行的模块
     private String acttime;//时间
-    private String uname;//用户名字
-    private TblBackUser backUser;
+    private String description;//描述
+    private String rsponseDate;//响应时间
+    private String ip;//ip地址
+    private long endtime;
 
     public TblLog() {
     }
@@ -25,20 +29,12 @@ public class TblLog {
         this.logid = logid;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getUname() {
+        return uname;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public String getBackuserid() {
-        return backuserid;
-    }
-
-    public void setBackuserid(String backuserid) {
-        this.backuserid = backuserid;
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
     public String getIncident() {
@@ -49,6 +45,14 @@ public class TblLog {
         this.incident = incident;
     }
 
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
     public String getActtime() {
         return acttime;
     }
@@ -57,19 +61,35 @@ public class TblLog {
         this.acttime = acttime;
     }
 
-    public String getUname() {
-        return uname;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUname(String uname) {
-        this.uname = uname;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public TblBackUser getBackUser() {
-        return backUser;
+    public String getRsponseDate() {
+        return rsponseDate;
     }
 
-    public void setBackUser(TblBackUser backUser) {
-        this.backUser = backUser;
+    public void setRsponseDate(String rsponseDate) {
+        this.rsponseDate = rsponseDate;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public long getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(long endtime) {
+        this.endtime = endtime;
     }
 }

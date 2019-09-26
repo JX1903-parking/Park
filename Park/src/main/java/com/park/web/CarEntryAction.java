@@ -1,5 +1,6 @@
 package com.park.web;
 
+import com.park.aoplog.Log;
 import com.park.biz.CarBiz;
 import com.park.entity.TblCar;
 import com.park.entity.TblLocation;
@@ -33,6 +34,7 @@ public class CarEntryAction {
      *
      * @return {Result}
      */
+    @Log(operationType = "文件上传", operationName = "上传入场车辆的车牌号图片", module = "系统管理")
     @RequestMapping(value = "/upfile.action")
     public @ResponseBody
     Object upfile(@RequestParam(value = "file", required = false) MultipartFile mfile, HttpServletRequest request) {
@@ -45,12 +47,13 @@ public class CarEntryAction {
     }
 
     //图片识别
+    @Log(operationType = "图片识别", operationName = "将获取的车牌号图片转为文字，并添加入场时间和设置车辆停车位置", module = "系统管理")
     @RequestMapping(value = "/upImg.action")
     public @ResponseBody
     Object upImg(@RequestParam(value = "file", required = false) MultipartFile mfile, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         if (!upFile.upfile(mfile, request)) {
-            map.put("code",1);
+            map.put("code", 1);
             return map;
         }
         //图片识别
@@ -75,24 +78,24 @@ public class CarEntryAction {
             car.setLocationid(b);
             //增加临时车
             carBiz.addCar(car);
-        }else{
-            Map<String,Object> m=new HashMap<>();
-            m.put("carid",car.getCarid());
-            m.put("locationid",b);
+        } else {
+            Map<String, Object> m = new HashMap<>();
+            m.put("carid", car.getCarid());
+            m.put("locationid", b);
             carBiz.modCar(m);
         }
         //增加停车流水
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
         String dateStr = dateFormat.format(now);
-        TblRecord record=new TblRecord();
+        TblRecord record = new TblRecord();
         record.setCarid(car.getCarid());
         record.setIntime(dateStr);
         record.setLocationid(b);
         carBiz.addRecord(record);
 
-        int current=carBiz.getLocation();
-        int total=carBiz.getTotal();
+        int current = carBiz.getLocation();
+        int total = carBiz.getTotal();
         //修改车位状态
         carBiz.modLocation(b);
         map.put("code", 0);
@@ -100,9 +103,9 @@ public class CarEntryAction {
         //车辆信息
         map.put("data", car);
         //当前可用车位
-        map.put("current",current);
+        map.put("current", current);
         //总车位
-        map.put("total",total);
+        map.put("total", total);
         return map;
     }
 }

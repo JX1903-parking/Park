@@ -40,8 +40,8 @@
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd><a onclick="xadmin.open('个人信息','javascrtpt:;')">个人信息</a></dd>
-                <dd><a onclick="xadmin.open('切换帐号','javascrtpt:;')">切换帐号</a></dd>
-                <dd><a href="./login.jsp">退出</a></dd>
+<%--                <dd><a onclick="xadmin.open('切换帐号','javascrtpt:;')">切换帐号</a></dd>--%>
+                <dd><a href="#">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
@@ -64,7 +64,7 @@
                         <cite>后台用户管理</cite></a></li>
                 </ul>
             </li>
-            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="菜单管理">&#xe723;</i> <cite>文档管理</cite>
+            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="菜单管理">&#xe723;</i> <cite>菜单管理</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li><a onclick="xadmin.add_tab('增加菜单','jsp路径',true)"> <i class="iconfont">&#xe6a7;</i>
@@ -81,10 +81,10 @@
                         <cite>日志列表</cite></a></li>
                 </ul>
             </li>
-            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="角色管理">&#xe723;</i> <cite>日志管理</cite>
+            <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="角色管理">&#xe723;</i> <cite>角色管理</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
-                    <li><a onclick="xadmin.add_tab('角色列表','../admin/RoleList.jsp',true)"> <i class="iconfont">&#xe6a7;</i>
+                    <li><a onclick="xadmin.add_tab('角色列表','#',true)"> <i class="iconfont">&#xe6a7;</i>
                         <cite>角色列表</cite></a></li>
                 </ul>
             </li>
@@ -92,10 +92,10 @@
             <li><a href="javascript:;"> <i class="iconfont left-nav-li" lay-tips="系统配置">&#xe723;</i> <cite>系统配置</cite>
                 <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
-                    <li><a onclick="xadmin.add_tab('参数配置','../admin/ParamConfig.jsp',true)"> <i
+                    <li><a onclick="xadmin.add_tab('参数配置','#',true)"> <i
                             class="iconfont">&#xe6a7;</i>
                         <cite>参数配置</cite></a></li>
-                    <li><a onclick="xadmin.add_tab('权限配置','../admin/ResConfig.jsp',true)"> <i
+                    <li><a onclick="xadmin.add_tab('权限配置','#',true)"> <i
                             class="iconfont">&#xe6a7;</i> <cite>权限配置</cite></a>
                     </li>
                 </ul>

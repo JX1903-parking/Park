@@ -6,6 +6,7 @@ package com.park.web;
  */
 
 
+import com.park.aoplog.Log;
 import com.park.tools.CreateSecurityCodeANDImage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import java.io.OutputStream;
 @RequestMapping("/serial")
 public class SecurityCodeImageAction {
 
+    @Log(operationType = "验证码", operationName = "获取验证码，返回登录界面显示", module = "系统管理")
     @RequestMapping(value = "getimage.action")
     public void getImage(HttpServletRequest request, HttpServletResponse response) {
         FileInputStream fis = null;

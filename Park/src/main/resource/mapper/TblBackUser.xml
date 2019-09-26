@@ -57,20 +57,30 @@
 		<if test="null != keyword and !(''.equals(keyword))"> and uname like "%"#{keyword}"%"
 		</if>
 	</select>
+
+
 	<select id="findBackUserById" parameterType="java.lang.String" resultType="com.park.entity.TblBackUser">
 		select * from tbbackuser where userid = #{userid}
 	</select>
+
+
 	<insert id="addBackUser" parameterType="com.park.entity.TblBackUser" keyProperty="userid">
   		insert into tbbackuser (userid,uname,upass,utel,uemail,roleid,uage,usex,address,regtime)
 		values(#{userid},#{uname},#{upass},#{utel},#{uemail},#{roleid},#{uage},#{usex},#{address},#{regtime})
 	</insert>
+
+
 	<update id="updateBackUser" parameterType="com.park.entity.TblBackUser">
   		update tbbackuser set uname=#{uname},upass=#{upass},utel=#{utel},uemail=#{uemail},
   		uage=#{uage},usex=#{usex},address=#{address}
   		where userid = #{userid}
 	</update>
-<!--	<select id="findParentMenu" parameterType="java.lang.String" resultType="com.park.entity.TblParentMenu">-->
-<!--		select pname from tbparentmenu where ppid = 0-->
-<!--	</select>-->
+
+
+
+
+	<select id="CheckName" resultType="com.park.entity.TblBackUser">
+		select * from tbbackuser where userid = #{userid}
+	</select>
 </mapper>
 	

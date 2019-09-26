@@ -36,6 +36,17 @@ public class UserBizImpl implements UserBiz {
         return num;
     }
 
+    /**
+     * @deprecated : 检测账号
+     * @param userid 用户名
+     * @return
+     */
+    @Override
+    public TblBackUser CheckName(String userid){
+
+        return backUserMapper.CheckName(userid);
+    }
+
     @Override
     public List<TblBackUser> findAllBackUser(Map<String, Object> paramap) {
         System.out.println(paramap.get("begintime")+" "+paramap.get("limit"));

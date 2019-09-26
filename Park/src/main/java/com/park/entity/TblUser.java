@@ -27,6 +27,13 @@ public class TblUser {
 
     }
 
+    public TblUser(String userid, String uname, String upass, String utel) {
+        this.userid = userid;
+        this.uname = uname;
+        this.upass = upass;
+        this.utel = utel;
+    }
+
     public String getUserid() {
         return userid;
     }

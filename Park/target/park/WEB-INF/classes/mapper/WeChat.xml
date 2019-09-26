@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.park.mapper.WeChatMapper">
+
+    <select id="login" parameterType="java.lang.String" resultType="com.park.entity.TblUser">
+        select * from tbfrontuser where userid=#{userid} and upass=#{upass} and isdeleted = 0
+    </select>
+
+    <select id="fendmycar" parameterType="java.lang.String" resultType="com.park.entity.TblCar">
+        select * from tbcar car,tbfrontuser fu where car.userid=fu.userid and fu.userid=#{userid}
+    </select>
+    <select id="fendByUserid" parameterType="java.lang.String" resultType="com.park.entity.TblCar">
+        select * from tbfrontuser where userid=#{userid}
+    </select>
+    <insert id="reg" parameterType="com.park.entity.TblUser" >
+        INSERT into tbfrontuser(userid,uname,upass,utel) values(#{userid},#{uname},#{upass},#{utel})
+    </insert>
+</mapper>
+	
